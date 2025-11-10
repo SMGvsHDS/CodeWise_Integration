@@ -1,0 +1,124 @@
+# Annotation Dynamicpropertysource
+
+Search
+⌘ + k
+@DynamicPropertySource
+@DynamicPropertySource
+is an annotation that can be applied to methods in integration
+test classes that need to register
+dynamic
+properties to be added to the set of
+PropertySources
+in the
+Environment
+for an
+ApplicationContext
+loaded for an
+integration test. Dynamic properties are useful when you do not know the value of the
+properties upfront – for example, if the properties are managed by an external resource
+such as for a container managed by the
+Testcontainers
+project.
+The following example demonstrates how to register a dynamic property:
+Java
+Kotlin
+```
+@ContextConfiguration
+class
+MyIntegrationTests
+{
+static
+MyExternalServer server =
+// ...
+@DynamicPropertySource
+(
+1
+)
+static
+void
+dynamicProperties
+(DynamicPropertyRegistry registry)
+{
+(
+2
+)
+registry.add(
+"server.port"
+, server::getPort);
+(
+3
+)
+}
+// tests ...
+}
+Copied!
+```
+1
+Annotate a
+static
+method with
+@DynamicPropertySource
+.
+2
+Accept a
+DynamicPropertyRegistry
+as an argument.
+3
+Register a dynamic
+server.port
+property to be retrieved lazily from the server.
+```
+@ContextConfiguration
+class
+MyIntegrationTests
+{
+companion
+object
+{
+@JvmStatic
+val
+server: MyExternalServer =
+// ...
+@DynamicPropertySource
+(
+1
+)
+@JvmStatic
+fun
+dynamicProperties
+(registry:
+DynamicPropertyRegistry
+)
+{
+(
+2
+)
+registry.add(
+"server.port"
+, server::getPort)
+(
+3
+)
+}
+}
+// tests ...
+}
+Copied!
+```
+1
+Annotate a
+static
+method with
+@DynamicPropertySource
+.
+2
+Accept a
+DynamicPropertyRegistry
+as an argument.
+3
+Register a dynamic
+server.port
+property to be retrieved lazily from the server.
+See
+Context Configuration with Dynamic Property Sources
+for further details.

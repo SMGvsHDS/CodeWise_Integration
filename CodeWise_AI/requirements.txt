@@ -1,0 +1,36 @@
+# 실행 명령어
+# pip install -r requirements.txt
+
+#  Web Framework
+fastapi
+uvicorn
+
+# LangChain Core & Components
+langchain
+langchain-core
+langchain-community
+
+# Upstage Integration
+langchain-upstage
+
+# Vector Database
+chromadb
+
+# LangGraph (AI workflow orchestration)
+langgraph
+
+# LangSmith (Experiment & Tracing Dashboard)
+langsmith
+
+# Environment Variables
+python-dotenv
+
+# Logging Utility
+loguru
+
+# Web Search Tool
+duckduckgo-search
+ddgs
+
+# Console Color Utility
+colorama

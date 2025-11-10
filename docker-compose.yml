@@ -1,0 +1,74 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: codewise-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./CodeWise_BE/.env
+    environment:
+      TZ: Asia/Seoul
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+        "--default-authentication-plugin=mysql_native_password",
+        "--skip-character-set-client-handshake"
+      ]
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ai:
+    build:
+      context: ./CodeWise_AI
+    container_name: codewise-ai
+    restart: unless-stopped
+    env_file:
+      - ./CodeWise_AI/.env
+    environment:
+      CHROMA_PATH: /app/chroma_db
+    volumes:
+      - chroma_data:/app/chroma_db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  backend:
+    build:
+      context: ./CodeWise_BE
+    container_name: codewise-backend
+    restart: unless-stopped
+    env_file:
+      - ./CodeWise_BE/.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/codewise?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      FASTAPI_BASE_URL: http://ai:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - ai
+
+  frontend:
+    build:
+      context: ./CodeWise_FE
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+        VITE_PUBLIC_BACKEND_URL: ${VITE_PUBLIC_BACKEND_URL:-http://localhost:8080}
+    container_name: codewise-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  chroma_data:

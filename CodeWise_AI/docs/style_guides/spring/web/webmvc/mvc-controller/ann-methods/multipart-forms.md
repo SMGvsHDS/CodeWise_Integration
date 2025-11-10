@@ -1,0 +1,342 @@
+# Multipart Forms
+
+Search
+⌘ + k
+Multipart
+See equivalent in the Reactive stack
+After a
+MultipartResolver
+has been
+enabled
+, the content of POST
+requests with
+multipart/form-data
+is parsed and accessible as regular request
+parameters. The following example accesses one regular form field and one uploaded
+file:
+Java
+Kotlin
+```
+@Controller
+public
+class
+FileUploadController
+{
+@PostMapping
+(
+"/form"
+)
+public
+String
+handleFormUpload
+(@RequestParam(
+"name"
+)
+String name,
+@
+RequestParam
+(
+"file"
+)
+MultipartFile file)
+{
+if
+(!file.isEmpty()) {
+byte
+[] bytes = file.getBytes();
+// store the bytes somewhere
+return
+"redirect:uploadSuccess"
+;
+}
+return
+"redirect:uploadFailure"
+;
+}
+}
+Copied!
+```
+```
+@Controller
+class
+FileUploadController
+{
+@PostMapping(
+"/form"
+)
+fun
+handleFormUpload
+(
+@RequestParam(
+"name"
+)
+name:
+String
+,
+@RequestParam(
+"file"
+)
+file:
+MultipartFile
+)
+: String {
+if
+(!file.isEmpty) {
+val
+bytes = file.bytes
+// store the bytes somewhere
+return
+"redirect:uploadSuccess"
+}
+return
+"redirect:uploadFailure"
+}
+}
+Copied!
+```
+Declaring the argument type as a
+List<MultipartFile>
+allows for resolving multiple
+files for the same parameter name.
+When the
+@RequestParam
+annotation is declared as a
+Map<String, MultipartFile>
+or
+MultiValueMap<String, MultipartFile>
+, without a parameter name specified in the annotation,
+then the map is populated with the multipart files for each given parameter name.
+With Servlet multipart parsing, you may also declare
+jakarta.servlet.http.Part
+instead of Spring’s
+MultipartFile
+, as a method argument or collection value type.
+You can also use multipart content as part of data binding to a
+command object
+. For example, the form field
+and file from the preceding example could be fields on a form object,
+as the following example shows:
+Java
+Kotlin
+```
+class
+MyForm
+{
+private
+String name;
+private
+MultipartFile file;
+// ...
+}
+@Controller
+public
+class
+FileUploadController
+{
+@PostMapping
+(
+"/form"
+)
+public
+String
+handleFormUpload
+(MyForm form, BindingResult errors)
+{
+if
+(!form.getFile().isEmpty()) {
+byte
+[] bytes = form.getFile().getBytes();
+// store the bytes somewhere
+return
+"redirect:uploadSuccess"
+;
+}
+return
+"redirect:uploadFailure"
+;
+}
+}
+Copied!
+```
+```
+class
+MyForm
+(
+val
+name: String,
+val
+file: MultipartFile, ...)
+@Controller
+class
+FileUploadController
+{
+@PostMapping(
+"/form"
+)
+fun
+handleFormUpload
+(form:
+MyForm
+, errors:
+BindingResult
+)
+: String {
+if
+(!form.file.isEmpty) {
+val
+bytes = form.file.bytes
+// store the bytes somewhere
+return
+"redirect:uploadSuccess"
+}
+return
+"redirect:uploadFailure"
+}
+}
+Copied!
+```
+Multipart requests can also be submitted from non-browser clients in a RESTful service
+scenario. The following example shows a file with JSON:
+```
+POST /someUrl
+Content-Type: multipart/mixed
+--edt7Tfrdusa7r3lNQc79vXuhIIMlatb7PQg7Vp
+Content-Disposition: form-data; name="meta-data"
+Content-Type: application/json; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+{
+"name": "value"
+}
+--edt7Tfrdusa7r3lNQc79vXuhIIMlatb7PQg7Vp
+Content-Disposition: form-data; name="file-data"; filename="file.properties"
+Content-Type: text/xml
+Content-Transfer-Encoding: 8bit
+... File Data ...
+```
+You can access the "meta-data" part with
+@RequestParam
+as a
+String
+but you’ll
+probably want it deserialized from JSON (similar to
+@RequestBody
+). Use the
+@RequestPart
+annotation to access a multipart after converting it with an
+HttpMessageConverter
+:
+Java
+Kotlin
+```
+@PostMapping
+(
+"/"
+)
+public
+String
+handle
+(@RequestPart(
+"meta-data"
+)
+MetaData metadata,
+@
+RequestPart
+(
+"file-data"
+)
+MultipartFile file)
+{
+// ...
+}
+Copied!
+```
+```
+@PostMapping(
+"/"
+)
+fun
+handle
+(
+@RequestPart(
+"meta-data"
+)
+metadata:
+MetaData
+,
+@RequestPart(
+"file-data"
+)
+file:
+MultipartFile
+)
+: String {
+// ...
+}
+Copied!
+```
+You can use
+@RequestPart
+in combination with
+jakarta.validation.Valid
+or use Spring’s
+@Validated
+annotation, both of which cause Standard Bean Validation to be applied.
+By default, validation errors cause a
+MethodArgumentNotValidException
+, which is turned
+into a 400 (BAD_REQUEST) response. Alternatively, you can handle validation errors locally
+within the controller through an
+Errors
+or
+BindingResult
+argument,
+as the following example shows:
+Java
+Kotlin
+```
+@PostMapping
+(
+"/"
+)
+public
+String
+handle
+(@Valid @RequestPart(
+"meta-data"
+)
+MetaData metadata, Errors errors)
+{
+// ...
+}
+Copied!
+```
+```
+@PostMapping(
+"/"
+)
+fun
+handle
+(
+@Valid
+@RequestPart(
+"meta-data"
+)
+metadata:
+MetaData
+, errors:
+Errors
+)
+: String {
+// ...
+}
+Copied!
+```
+If method validation applies because other parameters have
+@Constraint
+annotations,
+then
+HandlerMethodValidationException
+is raised instead. For more details, see the
+section on
+Validation
+.

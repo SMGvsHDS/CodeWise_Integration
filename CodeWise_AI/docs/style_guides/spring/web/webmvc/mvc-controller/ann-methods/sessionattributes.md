@@ -1,0 +1,157 @@
+# Sessionattributes
+
+Search
+⌘ + k
+@SessionAttributes
+See equivalent in the Reactive stack
+@SessionAttributes
+is used to store model attributes in the HTTP Servlet session between
+requests. It is a type-level annotation that declares the session attributes used by a
+specific controller. This typically lists the names of model attributes or types of
+model attributes that should be transparently stored in the session for subsequent
+requests to access.
+The following example uses the
+@SessionAttributes
+annotation:
+Java
+Kotlin
+```
+@Controller
+@SessionAttributes
+(
+"pet"
+)
+(
+1
+)
+public
+class
+EditPetForm
+{
+// ...
+}
+Copied!
+```
+1
+Using the
+@SessionAttributes
+annotation.
+```
+@Controller
+@SessionAttributes(
+"pet"
+)
+(
+1
+)
+class
+EditPetForm
+{
+// ...
+}
+Copied!
+```
+1
+Using the
+@SessionAttributes
+annotation.
+On the first request, when a model attribute with the name,
+pet
+, is added to the model,
+it is automatically promoted to and saved in the HTTP Servlet session. It remains there
+until another controller method uses a
+SessionStatus
+method argument to clear the
+storage, as the following example shows:
+Java
+Kotlin
+```
+@Controller
+@SessionAttributes
+(
+"pet"
+)
+(
+1
+)
+public
+class
+EditPetForm
+{
+// ...
+@PostMapping
+(
+"/pets/{id}"
+)
+public
+String
+handle
+(Pet pet, BindingResult errors, SessionStatus status)
+{
+if
+(errors.hasErrors) {
+// ...
+}
+status.setComplete();
+(
+2
+)
+// ...
+}
+}
+Copied!
+```
+1
+Storing the
+Pet
+value in the Servlet session.
+2
+Clearing the
+Pet
+value from the Servlet session.
+```
+@Controller
+@SessionAttributes(
+"pet"
+)
+(
+1
+)
+class
+EditPetForm
+{
+// ...
+@PostMapping(
+"/pets/{id}"
+)
+fun
+handle
+(pet:
+Pet
+, errors:
+BindingResult
+, status:
+SessionStatus
+)
+: String {
+if
+(errors.hasErrors()) {
+// ...
+}
+status.setComplete()
+(
+2
+)
+// ...
+}
+}
+Copied!
+```
+1
+Storing the
+Pet
+value in the Servlet session.
+2
+Clearing the
+Pet
+value from the Servlet session.

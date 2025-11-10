@@ -1,0 +1,139 @@
+# Requestparam
+
+Search
+⌘ + k
+@RequestParam
+See equivalent in the Servlet stack
+You can use the
+@RequestParam
+annotation to bind query parameters to a method argument in a
+controller. The following code snippet shows the usage:
+Java
+Kotlin
+```
+@Controller
+@RequestMapping
+(
+"/pets"
+)
+public
+class
+EditPetForm
+{
+// ...
+@GetMapping
+public
+String
+setupForm
+(@RequestParam(
+"petId"
+)
+int
+petId, Model model)
+{
+(
+1
+)
+Pet pet =
+this
+.clinic.loadPet(petId);
+model.addAttribute(
+"pet"
+, pet);
+return
+"petForm"
+;
+}
+// ...
+}
+Copied!
+```
+1
+Using
+@RequestParam
+.
+```
+import
+org.springframework.ui.
+set
+@Controller
+@RequestMapping(
+"/pets"
+)
+class
+EditPetForm
+{
+// ...
+@GetMapping
+fun
+setupForm
+(
+@RequestParam(
+"petId"
+)
+petId:
+Int
+, model:
+Model
+)
+: String {
+(
+1
+)
+val
+pet = clinic.loadPet(petId)
+model[
+"pet"
+] = pet
+return
+"petForm"
+}
+// ...
+}
+Copied!
+```
+1
+Using
+@RequestParam
+.
+The Servlet API “request parameter” concept conflates query parameters, form
+data, and multiparts into one. However, in WebFlux, each is accessed individually through
+ServerWebExchange
+. While
+@RequestParam
+binds to query parameters only, you can use
+data binding to apply query parameters, form data, and multiparts to a
+command object
+.
+Method parameters that use the
+@RequestParam
+annotation are required by default, but
+you can specify that a method parameter is optional by setting the required flag of a
+@RequestParam
+to
+false
+or by declaring the argument with a
+java.util.Optional
+wrapper.
+Type conversion is applied automatically if the target method parameter type is not
+String
+. See
+Type Conversion
+.
+When a
+@RequestParam
+annotation is declared on a
+Map<String, String>
+or
+MultiValueMap<String, String>
+argument, the map is populated with all query parameters.
+Note that use of
+@RequestParam
+is optional — for example, to set its attributes. By
+default, any argument that is a simple value type (as determined by
+BeanUtils#isSimpleProperty
+)
+and is not resolved by any other argument resolver is treated as if it were annotated
+with
+@RequestParam
+.

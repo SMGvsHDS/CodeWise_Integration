@@ -1,0 +1,128 @@
+# Requestheader
+
+Search
+⌘ + k
+@RequestHeader
+See equivalent in the Servlet stack
+You can use the
+@RequestHeader
+annotation to bind a request header to a method argument in a
+controller.
+The following example shows a request with headers:
+```
+Host                    localhost:8080
+Accept                  text/html,application/xhtml+xml,application/xml;q=0.9
+Accept-Language         fr,en-gb;q=0.7,en;q=0.3
+Accept-Encoding         gzip,deflate
+Accept-Charset          ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive              300
+```
+The following example gets the value of the
+Accept-Encoding
+and
+Keep-Alive
+headers:
+Java
+Kotlin
+```
+@GetMapping
+(
+"/demo"
+)
+public
+void
+handle
+(
+@RequestHeader(
+"Accept-Encoding"
+)
+String encoding,
+(
+1
+)
+@
+RequestHeader
+(
+"Keep-Alive"
+)
+long
+keepAlive)
+{
+(
+2
+)
+//...
+}
+Copied!
+```
+1
+Get the value of the
+Accept-Encoding
+header.
+2
+Get the value of the
+Keep-Alive
+header.
+```
+@GetMapping(
+"/demo"
+)
+fun
+handle
+(
+@RequestHeader(
+"Accept-Encoding"
+)
+encoding:
+String
+,
+(
+1
+)
+@RequestHeader(
+"Keep-Alive"
+)
+keepAlive:
+Long
+) {
+(
+2
+)
+//...
+}
+Copied!
+```
+1
+Get the value of the
+Accept-Encoding
+header.
+2
+Get the value of the
+Keep-Alive
+header.
+Type conversion is applied automatically if the target method parameter type is not
+String
+. See
+Type Conversion
+.
+When a
+@RequestHeader
+annotation is used on a
+Map<String, String>
+,
+MultiValueMap<String, String>
+, or
+HttpHeaders
+argument, the map is populated
+with all header values.
+Built-in support is available for converting a comma-separated string into an
+array or collection of strings or other types known to the type conversion system. For
+example, a method parameter annotated with
+@RequestHeader("Accept")
+may be of type
+String
+but also of
+String[]
+or
+List<String>
+.

@@ -1,0 +1,66 @@
+# Python / FastAPI 기본 캐시
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 가상환경 (venv, conda 등)
+venv/
+env/
+.venv/
+.envrc
+pip-wheel-metadata/
+*.egg-info/
+*.egg
+
+# 환경 변수 / 민감정보
+.env
+.env.*
+*.secret
+*.key
+
+# IDE / 편집기 설정
+.vscode/
+.idea/
+*.iml
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+
+# 로그 / 임시 파일
+logs/
+*.log
+*.tmp
+*.bak
+
+# Chroma / Vector DB
+chroma_db/
+chroma/
+*.sqlite
+*.db
+
+# __pycache__ / 테스트 캐시
+pytest_cache/
+.tox/
+.coverage
+.cache/
+
+# 빌드 / 배포 관련
+dist/
+build/
+*.spec
+
+# 노트북, 데이터, 임시파일
+.ipynb_checkpoints/
+data/
+datasets/
+*.csv
+*.tsv
+*.xlsx
+
+# OS별 임시폴더
+*.swp
+*.swo
+
+# 임시 실행파일
+tempCodeRunnerFile.py

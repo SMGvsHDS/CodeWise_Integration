@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 207 89% 76%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 25% 27%;
+    --muted-foreground: 218 11% 65%;
+
+    --accent: 207 89% 76%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 25% 27%;
+    --input: 215 20% 20%;
+    --ring: 207 89% 76%;
+
+    --radius: 0.75rem;
+
+    --glow: 207 89% 76%;
+    --code-bg: 220 26% 14%;
+    --chat-user-bg: 207 89% 76%;
+    --chat-ai-bg: 215 25% 27%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+}
+
+@layer components {
+  .markdown-body {
+    @apply text-sm leading-relaxed space-y-4 break-words;
+  }
+
+  .markdown-body p {
+    @apply whitespace-pre-wrap;
+  }
+
+  .markdown-body h1 {
+    @apply text-2xl font-semibold;
+  }
+
+  .markdown-body h2 {
+    @apply text-xl font-semibold;
+  }
+
+  .markdown-body h3 {
+    @apply text-lg font-semibold;
+  }
+
+  .markdown-body h4 {
+    @apply text-base font-semibold;
+  }
+
+  .markdown-body a {
+    @apply text-primary underline underline-offset-2 font-medium hover:text-primary/80;
+  }
+
+  .markdown-body ul {
+    @apply list-disc pl-5 space-y-2;
+  }
+
+  .markdown-body ol {
+    @apply list-decimal pl-5 space-y-2;
+  }
+
+  .markdown-body li {
+    @apply pl-1;
+  }
+
+  .markdown-body code {
+    @apply bg-code-bg/60 px-1.5 py-0.5 rounded font-mono text-xs text-foreground;
+  }
+
+  .markdown-body pre {
+    @apply bg-code-bg/80 border border-border rounded-md p-4 overflow-auto text-xs text-foreground;
+  }
+
+  .markdown-body pre code {
+    @apply bg-transparent p-0 text-xs text-foreground;
+  }
+
+  .markdown-body blockquote {
+    @apply border-l-4 border-primary/40 pl-4 italic text-muted-foreground;
+  }
+
+  .markdown-body hr {
+    @apply border-t border-border my-4;
+  }
+
+  .markdown-body table {
+    @apply w-full text-left border-collapse text-sm;
+  }
+
+  .markdown-body th {
+    @apply border border-border bg-card/70 px-3 py-2 font-semibold;
+  }
+
+  .markdown-body td {
+    @apply border border-border px-3 py-2;
+  }
+}
+
+@layer utilities {
+  .glow-effect {
+    box-shadow: 0 0 20px rgba(131, 195, 255, 0.3);
+  }
+  
+  .glow-hover {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .glow-hover:hover {
+    box-shadow: 0 0 20px rgba(131, 195, 255, 0.5);
+    border-color: hsl(var(--glow));
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
+  }
+}

@@ -1,0 +1,63 @@
+# Extensions
+
+Search
+⌘ + k
+Extensions
+Kotlin
+extensions
+provide the ability
+to extend existing classes with additional functionality. The Spring Framework Kotlin APIs
+use these extensions to add new Kotlin-specific conveniences to existing Spring APIs.
+The
+Spring Framework KDoc API
+lists
+and documents all available Kotlin extensions and DSLs.
+Keep in mind that Kotlin extensions need to be imported to be used. This means,
+for example, that the
+GenericApplicationContext.registerBean
+Kotlin extension
+is available only if
+org.springframework.context.support.registerBean
+is imported.
+That said, similar to static imports, an IDE should automatically suggest the import in most cases.
+For example,
+Kotlin reified type parameters
+provide a workaround for JVM
+generics type erasure
+,
+and the Spring Framework provides some extensions to take advantage of this feature.
+This allows for a better Kotlin API
+RestTemplate
+, for the new
+WebClient
+from Spring
+WebFlux, and for various other APIs.
+Other libraries, such as Reactor and Spring Data, also provide Kotlin extensions
+for their APIs, thus giving a better Kotlin development experience overall.
+To retrieve a list of
+User
+objects in Java, you would normally write the following:
+```
+Flux<User> users  = client.get().retrieve().bodyToFlux(User
+.
+class
+)
+Copied!
+```
+With Kotlin and the Spring Framework extensions, you can instead write the following:
+```
+val
+users = client.
+get
+().retrieve().bodyToFlux<User>()
+// or (both are equivalent)
+val
+users : Flux<User> = client.
+get
+().retrieve().bodyToFlux()
+Copied!
+```
+As in Java,
+users
+in Kotlin is strongly typed, but Kotlin’s clever type inference allows
+for shorter syntax.

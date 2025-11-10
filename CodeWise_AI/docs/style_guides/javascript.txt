@@ -1,0 +1,19 @@
+# JavaScript Style Guide (Airbnb Summary)
+
+1. 변수는 `const` 혹은 `let`을 사용하고, `var`는 사용하지 않는다.
+
+2. 변수명과 함수명은 **camelCase**, 클래스명은 **PascalCase**로 작성한다.
+
+3. 문자열은 **템플릿 리터럴(```)** 을 우선 사용한다.
+   예: const message = `Hello, ${user.name}`;
+
+4. 들여쓰기는 2칸 공백을 사용한다.
+
+5. 세미콜론을 반드시 붙인다.
+
+6. 함수는 가능하면 **화살표 함수(arrow function)** 으로 작성한다.
+   예: const sum = (a, b) => a + b;
+
+7. 불변성(immutability)을 유지하기 위해 `const`를 기본으로 사용한다.
+
+8. import 순서는 외부 라이브러리 → 내부 모듈 순으로 정렬한다.

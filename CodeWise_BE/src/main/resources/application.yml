@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: codewise
+
+  config:
+    import: "optional:file:.env[.properties]"
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/codewise?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope: read:user,read:org,repo,user:email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: GitHub
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: login
+
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  expiration: 28800000 # 8시간 (밀리초
+
+external:
+  fastapi:
+    base-url: ${FASTAPI_BASE_URL:http://localhost:8000}
+    paths:
+      conventions: /ai/conventions
+      ask: /ai/ask
+  frontend:
+    base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
+    login-success-path: ${FRONTEND_LOGIN_SUCCESS_PATH:/login/success}

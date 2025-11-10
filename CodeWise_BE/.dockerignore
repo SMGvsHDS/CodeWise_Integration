@@ -1,0 +1,23 @@
+# Reduce Docker build context for the Spring Boot service
+.git
+.gitignore
+.gradle
+build
+out
+bin
+
+# IDE and editor artifacts
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+
+# Local environment and logs
+.env
+*.log
+
+# Misc
+HELP.md
+README.md
+docs

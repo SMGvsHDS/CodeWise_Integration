@@ -1,0 +1,56 @@
+# Annotation Commit
+
+Search
+⌘ + k
+@Commit
+@Commit
+indicates that the transaction for a transactional test method should be
+committed after the test method has completed. You can use
+@Commit
+as a direct
+replacement for
+@Rollback(false)
+to more explicitly convey the intent of the code.
+Analogous to
+@Rollback
+,
+@Commit
+can also be declared as a class-level or method-level
+annotation.
+The following example shows how to use the
+@Commit
+annotation:
+Java
+Kotlin
+```
+@Commit
+(
+1
+)
+@Test
+void
+testProcessWithoutRollback
+()
+{
+// ...
+}
+Copied!
+```
+1
+Commit the result of the test to the database.
+```
+@Commit
+(
+1
+)
+@Test
+fun
+testProcessWithoutRollback
+()
+{
+// ...
+}
+Copied!
+```
+1
+Commit the result of the test to the database.
